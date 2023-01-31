@@ -8,15 +8,12 @@ simple python flask application
 ##########################################################################
 
 import os
-import numpy as np
-
 from flask import Flask
 from flask import request
 from flask import render_template
 from flask import url_for
 from flask.json import jsonify
 
-from keras.models import load_model
 ##########################################################################
 ## Application Setup
 ##########################################################################
@@ -38,45 +35,29 @@ def hello():
     """
     return jsonify({"hello": "world"})
 
-@app.route("/api/hello/<name>")
-def hello_name(name):
-    """
-    Return a hello message with name
-    """
-    return jsonify({"hello": name})
+import numpy as np
+import pandas as pd 
+from keras.models import load_model
 
-@app.route("/api/whoami")
-def whoami():
-    """
-    Return a JSON object with the name, ip, and user agent
-    """
-    return jsonify(
-        name=request.remote_addr,
-        ip=request.remote_addr,
-        useragent=request.user_agent.string
-    )
-
-@app.route("/api/whoami/<name>")
-def whoami_name(name):
-    """
-    Return a JSON object with the name, ip, and user agent
-    """
-    return jsonify(
-        name=name,
-        ip=request.remote_addr,
-        useragent=request.user_agent.string
-    )
-
-model = load_model('\model')
+model = load_model('.\model')
 
 @app.route('/classify', methods=['POST'])
 def classify():
+
     data = request.get_json()
-    pixels = np.array(data['pixels'])
-    pixels = pixels / 255.0
-    pixels = pixels.reshape(1, 784)
-    prediction = model.predict_classes(pixels)[0]
-    return jsonify({'class': int(prediction)})
+    print(data)
+
+    pixels = pd.DataFrame(data['pixels']).T
+    print(pixels)
+
+    prediction = model.predict(pixels)
+    print(prediction[0])
+
+    prediction_list = prediction.tolist()
+
+    return jsonify({'predict': prediction_list[0]})
+
+
 ##########################################################################
 ## Main
 ##########################################################################
