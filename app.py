@@ -8,6 +8,7 @@ simple python flask application
 ##########################################################################
 
 import os
+import numpy as np
 
 from flask import Flask
 from flask import request
@@ -15,6 +16,7 @@ from flask import render_template
 from flask import url_for
 from flask.json import jsonify
 
+from keras.models import load_model
 ##########################################################################
 ## Application Setup
 ##########################################################################
@@ -65,6 +67,16 @@ def whoami_name(name):
         useragent=request.user_agent.string
     )
 
+model = load_model('\model')
+
+@app.route('/classify', methods=['POST'])
+def classify():
+    data = request.get_json()
+    pixels = np.array(data['pixels'])
+    pixels = pixels / 255.0
+    pixels = pixels.reshape(1, 784)
+    prediction = model.predict_classes(pixels)[0]
+    return jsonify({'class': int(prediction)})
 ##########################################################################
 ## Main
 ##########################################################################
