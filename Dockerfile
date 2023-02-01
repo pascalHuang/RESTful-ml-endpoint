@@ -2,7 +2,9 @@
 
 FROM python:3.8
 WORKDIR /usr/app
-copy requirements.txt flask
+
+copy . .
+
 RUN pip install -r requirements.txt
-COPY . .
+
 CMD ["python", "app.py"]
