@@ -74,14 +74,8 @@ model = load_model('.\model')
 def classify():
 
     data = request.get_json()
-    print(data)
-
     pixels = pd.DataFrame(data['pixels']).T
-    print(pixels)
-
     prediction = model.predict(pixels)
-    print(prediction[0])
-
     prediction_list = prediction.tolist()
 
     return jsonify({'predict': prediction_list[0]})
