@@ -21,12 +21,16 @@ pipeline {
                 sh "git branch staging"
                 sh "git checkout staging"
                 sh "git push origin staging"
+		echo 'branch created'
                 }
             }
         }
         stage('docker build') {
             steps {
                 echo 'Building docker image...'
+		bat 'docker build -t monimage .'
+		bat 'docker run -d monimage'
+		bat 'docker stop -t 100
             }
         }
     }
