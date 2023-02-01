@@ -30,7 +30,6 @@ pipeline {
                 echo 'Building docker image...'
 		bat 'docker build -t monimage .'
 		bat 'docker run -d monimage'
-		bat 'docker stop -t 100 monimage'
             }
         }
     }
