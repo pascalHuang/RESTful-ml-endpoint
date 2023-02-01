@@ -1,2 +1,4 @@
 flask
+keras
+pandas
 tensorflow
