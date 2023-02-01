@@ -17,7 +17,7 @@ pipeline {
         stage('Create Staging Branch') {
             steps {
                 sshagent(credentials: ['64e1eb8f-67f2-4ad9-aff8-74ea77af2a9a']) {
-                
+                sh "git branch --delete staging"
                 sh "git branch staging"
                 sh "git checkout staging"
                 sh "git push origin staging"
