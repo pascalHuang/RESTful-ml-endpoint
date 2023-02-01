@@ -68,7 +68,7 @@ def whoami_name(name):
 import pandas as pd 
 from keras.models import load_model
 
-model = load_model('.\model')
+model = load_model('D:\COURS-EFREI M2\Machine Learning in production\RESTful ml endpoint\RESTful-ml-endpoint\model')
 
 @app.route('/classify', methods=['POST'])
 def classify():
