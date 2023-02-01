@@ -1,4 +1,3 @@
 flask
 keras
 pandas
-tensorflow==2.0.0
