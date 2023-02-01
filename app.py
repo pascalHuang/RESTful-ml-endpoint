@@ -35,6 +35,36 @@ def hello():
     """
     return jsonify({"hello": "world"})
 
+@app.route("/api/hello/<name>")
+def hello_name(name):
+    """
+    Return a hello message with name
+    """
+    return jsonify({"hello": name})
+
+@app.route("/api/whoami")
+def whoami():
+    """
+    Return a JSON object with the name, ip, and user agent
+    """
+    return jsonify(
+        name=request.remote_addr,
+        ip=request.remote_addr,
+        useragent=request.user_agent.string
+    )
+
+@app.route("/api/whoami/<name>")
+def whoami_name(name):
+    """
+    Return a JSON object with the name, ip, and user agent
+    """
+    return jsonify(
+        name=name,
+        ip=request.remote_addr,
+        useragent=request.user_agent.string
+    )
+
+
 import numpy as np
 import pandas as pd 
 from keras.models import load_model

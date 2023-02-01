@@ -1,4 +1,6 @@
 import requests
+import unittest
+from app import app
 
 data = [0,   0,   0,   0,   0,   0,   0,   9,   8,   0,   0,  34,  29,
           7,   0,  11,  24,   0,   0,   3,   3,   1,   0,   1,   1,   0,
@@ -62,8 +64,41 @@ data = [0,   0,   0,   0,   0,   0,   0,   9,   8,   0,   0,  34,  29,
         127, 138, 138, 142, 145, 135, 125, 103,  87,  56,   0,   0,   0,
           0,   0,   0,   0]
 
-url = 'http://127.0.0.1:5000/classify'
-result = requests.post(url, json = {'pixels':data})
-r = result.json()
+class FlaskTestCase(unittest.TestCase):
 
-print(f'Expected, but got {r}')
+    def setUp(self):
+        self.app = app.test_client()
+
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_hello(self):
+        response = self.app.get('/api/hello')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, {'hello': 'world'})
+
+    def test_hello_name(self):
+        response = self.app.get('/api/hello/ben')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, {'hello': 'ben'})
+
+    def test_whoami(self):
+        response = self.app.get('/api/whoami')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.json['ip'])
+
+    def test_whoami_name(self):
+        response = self.app.get('/api/whoami/ben')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['name'], 'ben')
+
+    
+    def test_classify(self):
+        response = self.app.post('/classify', json = {'pixels':data})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['predict'], [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+if __name__ == '__main__':
+    unittest.main()
+
