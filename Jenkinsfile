@@ -26,10 +26,7 @@ pipeline {
         }
         stage('docker build') {
             steps {
-                #bat 'docker build -t myimage .'
-                #bat 'docker run myimage'
-                #bat 'docker login -u pascalhuang -p dckr_pat_RNrDL5pvTHCaa3sgwn7glkQpPak'
-                #bat 'docker push pascalhuang/jenkins_pipeline'
+                echo 'Building docker image...'
             }
         }
     }
