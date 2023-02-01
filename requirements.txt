@@ -1,4 +1,4 @@
 flask
 keras
 pandas
-tensorflow
+tensorflow==2.11
